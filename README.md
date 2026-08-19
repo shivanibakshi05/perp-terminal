@@ -99,8 +99,17 @@ node scripts/verify.mjs   # terminal 2
 20 passed, 0 failed
 ```
 
-`src/lib/book.ts` (orderbook aggregation) is a pure function with its own 16-assertion
-test covering bucket merging, size conservation, float drift, and spread integrity.
+Orderbook aggregation (`src/lib/book.ts`) is a pure function with its own test —
+16 assertions covering bucket merging, size conservation, float drift, and spread
+integrity, run against realistic Binance-shaped depth:
+
+```bash
+npm run test:book
+```
+
+```
+16 passed, 0 failed
+```
 
 ## Keyboard
 

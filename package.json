@@ -13,7 +13,8 @@
     "compile": "hardhat compile",
     "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
     "deploy:baseSepolia": "hardhat run scripts/deploy.ts --network baseSepolia",
-    "deploy:arbitrumSepolia": "hardhat run scripts/deploy.ts --network arbitrumSepolia"
+    "deploy:arbitrumSepolia": "hardhat run scripts/deploy.ts --network arbitrumSepolia",
+    "test:book": "tsx scripts/verifyBook.ts"
   },
   "dependencies": {
     "ethers": "^6.13.4",
@@ -36,6 +37,7 @@
     "solc": "^0.8.24",
     "tailwindcss": "^3.4.15",
     "ts-node": "^10.9.2",
+    "tsx": "^4.23.12",
     "typescript": "^5.6.3"
   }
 }
