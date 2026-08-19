@@ -142,7 +142,7 @@ export function OrderEntry({
             )}
           </div>
           <div className="field flex items-center justify-between cursor-default">
-            <span>{entryPrice > 0 ? formatPrice(entryPrice, market.priceDecimals) : "—"}</span>
+            <span>{entryPrice > 0 ? formatPrice(entryPrice, market.tradeDecimals) : "—"}</span>
             <span className="text-2xs text-text-muted">USD</span>
           </div>
         </div>
@@ -222,7 +222,7 @@ export function OrderEntry({
           />
           <Line
             label="Est. liquidation"
-            value={liquidationPreview > 0 ? formatPrice(liquidationPreview, market.priceDecimals) : "—"}
+            value={liquidationPreview > 0 ? formatPrice(liquidationPreview, market.tradeDecimals) : "—"}
             tone="text-amber-400"
           />
         </div>

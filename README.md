@@ -14,6 +14,7 @@ Most portfolio dApps stop at "connect wallet, read a balance." This one is built
 
 - **A high-frequency data pipeline that doesn't melt the main thread.** The depth stream fires every 100ms and the trade stream is unbounded. Every message writes to a private buffer; a single `requestAnimationFrame` flush commits to the store. Render rate is capped at the display refresh rate no matter how hard the socket pushes.
 - **Reconnection that behaves under failure.** Exponential backoff with jitter, capped retries, and a heartbeat that marks the feed *stale* when the socket is open but has stopped delivering — because a trader acting on a frozen book is the failure mode that matters.
+- **An orderbook that aggregates like a real venue.** Binance quotes BTC in $0.01 increments; rendering those raw at display precision produces rows that all read the same price and a spread that rounds to zero. Levels are bucketed by tick size with sizes summed — bids floored, asks ceiled, so a bucket never claims liquidity at a better price than exists and the two sides can't collapse onto a fake zero spread.
 - **A transaction lifecycle that tells the truth.** `signing → pending → confirmed → failed` as an explicit state machine, not a boolean spinner. "Your wallet is asking you to sign" and "it's on the network, waiting for a block" are different things, and the UI says which.
 - **Optimistic updates with a real reconciliation point.** Positions paint instantly on submit and roll back if the chain rejects. The chain stays the single source of truth.
 - **A demo mode that works with no wallet.** Full terminal, simulated account, live prices. If the exchange feed is unreachable (corporate proxy, regional restrictions), a local simulator takes over — clearly labelled *Simulated feed*, never passed off as live.
@@ -97,6 +98,9 @@ node scripts/verify.mjs   # terminal 2
 ```
 20 passed, 0 failed
 ```
+
+`src/lib/book.ts` (orderbook aggregation) is a pure function with its own 16-assertion
+test covering bucket merging, size conservation, float drift, and spread integrity.
 
 ## Keyboard
 

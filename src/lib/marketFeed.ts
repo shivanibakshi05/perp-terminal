@@ -1,6 +1,7 @@
 import { REST_BASE, WS_BASE, getMarket } from "@/lib/config";
 import { useMarketStore } from "@/store/marketStore";
 import type { BookLevel, Candle, Trade } from "@/lib/types";
+import { aggregateLevels } from "@/lib/book";
 
 /**
  * MarketFeed — a single WebSocket connection multiplexing depth, trades, and
@@ -78,19 +79,6 @@ function wsRoot(): string {
   // WS_BASE is configured as ".../ws"; the combined-stream endpoint is
   // ".../stream?streams=". Normalise so either form in .env works.
   return WS_BASE.replace(/\/(ws|stream)\/?$/, "");
-}
-
-function cumulative(levels: [string, string][], limit: number): BookLevel[] {
-  const out: BookLevel[] = [];
-  let total = 0;
-  for (let i = 0; i < Math.min(levels.length, limit); i++) {
-    const price = Number(levels[i][0]);
-    const size = Number(levels[i][1]);
-    if (!Number.isFinite(price) || !Number.isFinite(size)) continue;
-    total += size;
-    out.push({ price, size, total });
-  }
-  return out;
 }
 
 class MarketFeed {
@@ -344,9 +332,10 @@ class MarketFeed {
 
     if (stream.includes("@depth")) {
       const depth = data as DepthMessage;
+      const tick = getMarket(this.symbol ?? "").tickSize;
       this.pendingBook = {
-        bids: cumulative(depth.bids ?? [], BOOK_DEPTH),
-        asks: cumulative(depth.asks ?? [], BOOK_DEPTH),
+        bids: aggregateLevels(depth.bids ?? [], tick, "bid", BOOK_DEPTH),
+        asks: aggregateLevels(depth.asks ?? [], tick, "ask", BOOK_DEPTH),
       };
     } else if (stream.includes("@aggTrade")) {
       const t = data as AggTradeMessage;
@@ -462,6 +451,8 @@ class MarketFeed {
   }
 
   private syntheticTick(volatility: number) {
+    const tick = getMarket(this.symbol ?? "").tickSize;
+    const snap = (v: number) => Math.round(v / tick) * tick;
     // Mean-reverting random walk so the price wanders without drifting away.
     const drift = (Math.random() - 0.5) * volatility;
     this.syntheticPrice = Math.max(0.01, this.syntheticPrice + drift);
@@ -480,8 +471,8 @@ class MarketFeed {
       const askSize = (0.6 + Math.random() * 1.8) / (1 + i * 0.18);
       bidTotal += bidSize;
       askTotal += askSize;
-      bids.push({ price: mid - step, size: bidSize, total: bidTotal });
-      asks.push({ price: mid + step, size: askSize, total: askTotal });
+      bids.push({ price: snap(mid - step), size: bidSize, total: bidTotal });
+      asks.push({ price: snap(mid + step), size: askSize, total: askTotal });
     }
 
     this.pendingBook = { bids, asks };

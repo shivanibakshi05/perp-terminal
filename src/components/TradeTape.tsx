@@ -36,7 +36,7 @@ export function TradeTape() {
                 }`}
               >
                 <span className={t.isBuyerMaker ? "text-short" : "text-long"}>
-                  {formatPrice(t.price, market.priceDecimals)}
+                  {formatPrice(t.price, market.tradeDecimals)}
                 </span>
                 <span className="text-right text-text-secondary">{formatQty(t.qty)}</span>
                 <span className="text-right text-text-muted">{formatTime(t.time)}</span>

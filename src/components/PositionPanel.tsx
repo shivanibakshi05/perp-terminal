@@ -90,11 +90,11 @@ export function PositionPanel({
             <div className="grid grid-cols-2 gap-x-4 gap-y-2">
               <Cell label="Size" value={formatUsd(p.sizeUsd)} />
               <Cell label="Margin" value={formatUsd(p.margin)} />
-              <Cell label="Entry" value={formatPrice(p.entryPrice, market.priceDecimals)} />
-              <Cell label="Mark" value={formatPrice(markPrice, market.priceDecimals)} />
+              <Cell label="Entry" value={formatPrice(p.entryPrice, market.tradeDecimals)} />
+              <Cell label="Mark" value={formatPrice(markPrice, market.tradeDecimals)} />
               <Cell
                 label="Liquidation"
-                value={p.liquidationPrice > 0 ? formatPrice(p.liquidationPrice, market.priceDecimals) : "—"}
+                value={p.liquidationPrice > 0 ? formatPrice(p.liquidationPrice, market.tradeDecimals) : "—"}
                 tone={nearLiquidation ? "text-short" : "text-amber-400"}
               />
               <Cell
@@ -140,10 +140,10 @@ export function PositionPanel({
                       {formatUsd(h.sizeUsd)}
                     </td>
                     <td className="text-right px-3 py-1.5 text-text-secondary">
-                      {formatPrice(h.entry, market.priceDecimals)}
+                      {formatPrice(h.entry, market.tradeDecimals)}
                     </td>
                     <td className="text-right px-3 py-1.5 text-text-secondary">
-                      {formatPrice(h.exit, market.priceDecimals)}
+                      {formatPrice(h.exit, market.tradeDecimals)}
                     </td>
                     <td
                       className={`text-right px-3 py-1.5 ${

@@ -1,7 +1,10 @@
 export const MARKETS = [
-  { symbol: "BTCUSDT", label: "BTC-PERP", tickSize: 0.1, priceDecimals: 1, seedPrice: 68_000, tickVol: 12 },
-  { symbol: "ETHUSDT", label: "ETH-PERP", tickSize: 0.01, priceDecimals: 2, seedPrice: 3_500, tickVol: 1.2 },
-  { symbol: "SOLUSDT", label: "SOL-PERP", tickSize: 0.01, priceDecimals: 2, seedPrice: 170, tickVol: 0.12 },
+  // tickSize   = orderbook aggregation bucket (how venues group depth)
+  // priceDecimals = decimals for bucketed book prices
+  // tradeDecimals = decimals for raw prints and the mark, which are NOT bucketed
+  { symbol: "BTCUSDT", label: "BTC-PERP", tickSize: 0.1, priceDecimals: 1, tradeDecimals: 2, seedPrice: 68_000, tickVol: 12 },
+  { symbol: "ETHUSDT", label: "ETH-PERP", tickSize: 0.05, priceDecimals: 2, tradeDecimals: 2, seedPrice: 3_500, tickVol: 1.2 },
+  { symbol: "SOLUSDT", label: "SOL-PERP", tickSize: 0.01, priceDecimals: 2, tradeDecimals: 3, seedPrice: 170, tickVol: 0.12 },
 ] as const;
 
 export type Market = (typeof MARKETS)[number];

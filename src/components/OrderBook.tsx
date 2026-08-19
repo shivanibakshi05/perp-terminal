@@ -86,7 +86,7 @@ export function OrderBook({ onPriceClick }: { onPriceClick: (price: number) => v
       <div className="panel-header">
         <span>Order Book</span>
         <span className="normal-case tracking-normal">
-          {spread > 0 ? `${formatPrice(spread, market.priceDecimals)} · ${spreadBps.toFixed(1)}bps` : ""}
+          {spread > 0 ? `${formatPrice(spread, market.tradeDecimals)} · ${spreadBps.toFixed(2)}bps` : ""}
         </span>
       </div>
 
@@ -120,7 +120,7 @@ export function OrderBook({ onPriceClick }: { onPriceClick: (price: number) => v
 
           <div className="flex items-center justify-between px-2 py-1.5 my-0.5 border-y border-line bg-bg-raised/40">
             <span className={`num text-sm font-semibold ${midTone}`}>
-              {mid > 0 ? formatPrice(mid, market.priceDecimals) : "—"}
+              {mid > 0 ? formatPrice(mid, market.tradeDecimals) : "—"}
             </span>
             <span className="label">Mid</span>
           </div>

@@ -67,7 +67,7 @@ export function Header() {
           <div className="flex flex-col justify-center">
             <span className="label">Mark</span>
             <span className={`num text-sm font-semibold ${priceTone}`}>
-              {ticker.lastPrice > 0 ? formatPrice(ticker.lastPrice, market.priceDecimals) : "—"}
+              {ticker.lastPrice > 0 ? formatPrice(ticker.lastPrice, market.tradeDecimals) : "—"}
             </span>
           </div>
         </div>
