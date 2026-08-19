@@ -1,0 +1,107 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  @apply bg-bg-base text-text-primary antialiased;
+  font-feature-settings: "tnum" 1, "cv02" 1;
+}
+
+/* Numbers in a trading UI must not change width as they tick. */
+.num {
+  font-variant-numeric: tabular-nums;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer components {
+  .panel {
+    @apply bg-bg-panel border border-line rounded-lg;
+  }
+
+  .panel-header {
+    @apply flex items-center justify-between px-3 h-9 border-b border-line text-2xs font-medium uppercase tracking-wider text-text-muted;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 h-8 text-xs font-medium
+           transition-colors duration-100 disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent/90 text-white hover:bg-accent;
+  }
+
+  .btn-ghost {
+    @apply btn bg-bg-raised text-text-secondary hover:bg-bg-hover hover:text-text-primary border border-line;
+  }
+
+  .btn-long {
+    @apply btn bg-long/90 text-white hover:bg-long h-9;
+  }
+
+  .btn-short {
+    @apply btn bg-short/90 text-white hover:bg-short h-9;
+  }
+
+  .field {
+    @apply w-full bg-bg-base border border-line rounded-md px-2.5 h-9 text-sm num
+           text-text-primary placeholder:text-text-muted
+           focus:outline-none focus:border-accent/70 transition-colors;
+  }
+
+  .label {
+    @apply text-2xs uppercase tracking-wider text-text-muted;
+  }
+
+  .skeleton {
+    @apply bg-bg-raised/60 rounded animate-pulse;
+  }
+}
+
+/* Scrollbars that fit a dark terminal. */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a3442;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #384556;
+}
+
+@keyframes flash-up {
+  from {
+    background-color: rgba(18, 185, 129, 0.22);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+@keyframes flash-down {
+  from {
+    background-color: rgba(242, 85, 90, 0.22);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+.flash-up {
+  animation: flash-up 420ms ease-out;
+}
+.flash-down {
+  animation: flash-down 420ms ease-out;
+}
